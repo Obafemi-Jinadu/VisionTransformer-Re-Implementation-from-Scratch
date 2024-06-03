@@ -10,3 +10,7 @@ A Re-implementation of Vision Transformer from scratch based off of the paper 'A
 Figure 1: a) Vision Transformer overwivew b) image to patches
 
 
+Images are broken into non-overlapping patches ()
+Patches are projected to embeddings of higher dimensions using either
+- A linear layer (3, embedding_dimension) or
+- A 2d convolution operation (input_channel = 3, output_channel = embedding_dimension, kernel = patch_size, stride = patch_size) 
