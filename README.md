@@ -6,11 +6,10 @@ A Re-implementation of Vision Transformer from scratch based off of the paper 'A
   <h1 align="center" width=50>(a)</h1>
 
  <h1 align="center"><img src="https://github.com/Obafemi-Jinadu/VisionTransformer-Re-Implementation-from-Scratch/blob/2a2e44d4243832aa95cec3f83495ea7965fdb1ea/files/im2patches.png" /></h1>
- <h1 align="center" width=50>(b)</h1>
-Figure 1: a) Vision Transformer overwivew b) image to patches
+ <h1 align="center" width=50>(b)</h1> Figure 1: a) Vision Transformer overwivew b) image to patches.
 
 
-Images are broken into non-overlapping patches ()
-Patches are projected to embeddings of higher dimensions using either
+
+Images are broken into non-overlapping patches. Patches are projected to embeddings of higher dimensions using either
 - A linear layer (3, embedding_dimension) or
 - A 2d convolution operation (input_channel = 3, output_channel = embedding_dimension, kernel = patch_size, stride = patch_size) 
