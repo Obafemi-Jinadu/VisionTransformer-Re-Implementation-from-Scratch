@@ -12,4 +12,4 @@ Images are broken into non-overlapping patches. Patches are projected to embeddi
 - A linear layer (3, embedding_dimension) or
 - A 2d convolution operation (input_channel = 3, output_channel = embedding_dimension, kernel = patch_size, stride = patch_size).
   
-Unlike convolutional neural networks, transformers do not have the ability to understand the spatial ordering of patches which is why an inducive bias is incorporated into the transformer encoding in the form of postion encodings. Think of it like including an index to ID every image patch but instead, for better results the position encoding is a learnable parameter.
+Unlike convolutional neural networks, transformers do not have the ability to understand the spatial ordering of patches which is why an inducive bias is incorporated into the transformer encoder in the form of postion encodings. Think of it like including an index to ID every image patch but instead, for better results the position encoding is a learnable parameter.
