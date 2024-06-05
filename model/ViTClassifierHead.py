@@ -117,8 +117,6 @@ if __name__ == "__main__":
 	#num_steps = len(dataloader) * num_epochs
 	#lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_steps)
 	#warmup_scheduler = warmup.UntunedLinearWarmup()
-	epochs = 200
-
 	train_loss_list = []
 	test_loss_list = []
 	acc_list = []
