@@ -39,9 +39,34 @@ class PatchEmbedding(nn.Module):
 # TODO - Discussions
 # Transformer Encoder
 The patch embeddings are passed to the transformer encoder block which typically contains layer normalizations, multi-head self attention, MLP layers.
-# Layer Normalization
+## Layer Normalization
 As is customary in machine learning tasks we want to restrict/clip input values within a range for efficient training and also prevent exploding and vanishing gradients. Batch Normalization helps us achieve, where normalization is carried out per data batch. However, this has its limitations. Consider a scenario where the batch size is too small. This would introduce a lot of noise as the mean and normalization of the small batch do not accurately represent the data distribution. On the other hand, when we have a training set that's too large, mini-batches could be split across different GPUs making the global normalization of said mini-batch inefficient as the GPUs involved would need to synchronize batch statistics. This was perfectly put in my go-to deep learning book "Deep Learning Foundations and Concepts" by Christoper Bishop. Layer normalization does not have these shortcomings as normalization is carried out by layer making it independent of the batch size. Training deep transformers typically requires a lot of training data and often large batch sizes making layer normalization an ideal candidate.
 
+## Self Attention Mechanism
+The self attention mechanism aids us in extracting contextual information. Like what is the relevance of an image patch in the 'context' of another
+```
+class AttentionBlock(nn.Module):
+    def __init__(self, embeddings, head_size, bias=True):
+        super().__init__()
+        #every token emitts 2 vectors, key and query
+        #query- what am I looking for
+        #key what do I contain
+        self.embeddings = embeddings
+        self.head_size = head_size
+        self.qkv = nn.Linear(self.embeddings, self.head_size*3,bias=bias)
+        
+    def forward(self,x):
+        x = self.qkv(x)
+        B, N, emb = x.shape
+        x = x.view(B, N, emb//3, 3)
+        Q, K, V = torch.unbind(x,-1)
+        wei = Q@K.transpose(-2,-1) #(B N C) (B C N) --> B N N
+        wei/=self.head_size**0.5
+        wei = F.softmax(wei, dim = -1)
+        output = wei @ V
+        #print('output', output.shape)
+        return output
+```
 
 
 - Encoder Backbone
