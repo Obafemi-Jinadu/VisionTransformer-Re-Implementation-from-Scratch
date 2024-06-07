@@ -70,8 +70,23 @@ class AttentionBlock(nn.Module):
 ```
 
 ## Multi-head Self Attention (MSA)
-This mechanism involves running multiple self-attention operations (referred to as "heads") in parallel. Each attention head operates on the same input but with different learned parameters, allowing the model to capture different aspects of the contextual information. The outputs of these attention heads are then concatenated and projected through a linear layer. This process enables the model to aggregate and combine contextual information extracted from multiple perspectives, enhancing its ability to understand complex relationships within the data.
-
+This mechanism involves running multiple self-attention operations (referred to as "heads") in parallel. Each attention head operates on the same input but with different learned parameters, allowing the model to capture different aspects of the contextual information. The outputs of these attention heads are then concatenated and projected through a linear layer. This process enables the model to aggregate and combine contextual information extracted from multiple perspectives, enhancing its ability to understand complex relationships within the data. Code snippet given below:
+```
+class MSA(nn.Module):
+    def __init__(self, embeddings, n_heads):
+        super().__init__()
+        self.D_h = embeddings//n_heads 
+        self.heads = nn.ModuleList([AttentionBlock(embeddings, self.D_h) for i in range(n_heads)])
+        self.total_head_embed = self.D_h*n_heads
+        self.proj_back = nn.Linear(self.total_head_embed, embeddings)
+        self.dropout = nn.Dropout(0.1)
+        
+    def forward(self, x):   
+        x = torch.cat(([head(x) for head in self.heads]),dim = -1)
+        x = self.proj_back(x)
+        x = self.dropout(x)
+        return x
+```
 
 
 - Encoder Backbone
