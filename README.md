@@ -69,6 +69,10 @@ class AttentionBlock(nn.Module):
         return output
 ```
 
+## Multi-head Self Attention (MSA)
+This mechanism involves running multiple self-attention operations (referred to as "heads") in parallel. Each attention head operates on the same input but with different learned parameters, allowing the model to capture different aspects of the contextual information. The outputs of these attention heads are then concatenated and projected through a linear layer. This process enables the model to aggregate and combine contextual information extracted from multiple perspectives, enhancing its ability to understand complex relationships within the data.
+
+
 
 - Encoder Backbone
   - Layer norms, Self-attention mechanism, MLP
