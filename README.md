@@ -111,7 +111,7 @@ class MLP(nn.Module):
 ```
 Residual connections are also added to preserve and propagate information through the network and facilitate training of deeper networks. There's one between the input embeddings and the MSA and there is another between the output of the first residual block and the MLP output.
 
-These parts all bundle up to make a transformer encder  block, there are typically several encoder blocks sequentially. As reported by the authors [1] 
+These parts all bundle up to make a transformer encder  block, there are typically several encoder blocks sequentially. As reported by the authors [1]: 
 - The ViT-Base has 12 layers/blocks and 12 attention heads
 - The ViT-Large has 24 layers/blocks and 16 attention heads
 - The ViT-Huge has 32 layers/blocks and 16 attention heads
