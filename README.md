@@ -151,7 +151,14 @@ Recall: the class embedding was added to the input patches, that part is simply 
 
 If I wanted to used it backbone for pose estimation task the final layer would simply be conv2D(64, number_keypoints) to generate heatmaps that have number of channels corresponding to the number of keypoints to be estimated. The backbone could be used for any downstream computer vision task that requires feature extraction.
 
+The code can simply be run from terminal:
+```
+```
 
+contact
+```
+obafemi.jinadu@tufts.edu
+```
 
 # References
 [1] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S. and Uszkoreit, J., 2020. An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929.
