@@ -37,6 +37,13 @@ class PatchEmbedding(nn.Module):
 ```
 
 # TODO - Discussions
+# Transformer Encoder
+The patch embeddings are passed to the transformer encoder block which typically contains layer normalizations, multi-head self attention, MLP layers.
+# Layer Normalization
+As is customary in machine learning tasks we want to restrict/clip input values within a range for efficient training and also prevent exploding and vanishing gradients. Batch Normalization helps us achieve, where normalization is carried out per data batch. However, this has its limitations. Consider a scenario where the batch size is too small. This would introduce a lot of noise as the mean and normalization of the small batch do not accurately represent the data distribution. On the other hand, when we have a training set that's too large, mini-batches could be split across different GPUs making the global normalization of said mini-batch inefficient as the GPUs involved would need to synchronize batch statistics. This was perfectly put in my go-to deep learning book "Deep Learning Foundations and Concepts" by Christoper Bishop. Layer normalization does not have these shortcomings as normalization is carried out by layer making it independent of the batch size. Training deep transformers typically requires a lot of training data and often large batch sizes making layer normalization an ideal candidate.
+
+
+
 - Encoder Backbone
   - Layer norms, Self-attention mechanism, MLP
 - Model Head for computer vision downstream tasks like classification, pose estimation, segmentation etc.
