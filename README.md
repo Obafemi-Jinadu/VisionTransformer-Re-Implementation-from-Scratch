@@ -88,6 +88,33 @@ class MSA(nn.Module):
         return x
 ```
 
+## MLP
+This block takes in the output of the attention module expands and reduces the dimensionality to facilitate feature extraction and also introduces non-linearity to capture complete patterns. The code is given below:
+```
+class MLP(nn.Module):
+    def __init__(self, embeddings, mlp_ratio=4):
+        super().__init__()
+        self.dropout = nn.Dropout(0.1)
+        self.embeddings = embeddings
+        self.mlp_ratio = mlp_ratio
+        self.fc = nn.Linear(self.embeddings, self.embeddings*self.mlp_ratio)
+        self.gelu = nn.GELU()   
+        self.fc2 = nn.Linear(self.embeddings*self.mlp_ratio, self.embeddings)
+        
+    def forward(self, x):
+        x = self.fc(x)
+        x = self.dropout(x)
+        x = self.gelu(x)
+        x = self.fc2(x)
+        x = self.dropout(x)
+        return x
+```
+Residual connections are also added to preserve and propagate information through the network and facilitate training of deeper networks. There's one between the input embeddings and the MSA and there is another between the output of the first residual block and the MLP output.
+
+These parts all bundle up to make a transformer encder  block, there are typically several encoder blocks sequentially. As reported by the authors [1] 
+- The ViT-Base has 12 layers/blocks
+- The ViT-Large has 24 layers/blocks
+- The ViT-Huge has 32 layers/blocks 
 
 - Encoder Backbone
   - Layer norms, Self-attention mechanism, MLP
