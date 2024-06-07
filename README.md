@@ -116,10 +116,42 @@ These parts all bundle up to make a transformer encder  block, there are typical
 - The ViT-Large has 24 layers/blocks and 16 attention heads
 - The ViT-Huge has 32 layers/blocks and 16 attention heads
 
-- Encoder Backbone
-  - Layer norms, Self-attention mechanism, MLP
-- Model Head for computer vision downstream tasks like classification, pose estimation, segmentation etc.
-- Discuss More findings
+I call the combination of the input and transformer encoders the backbone and this backbone could be used for a suite of computer vision downstream tasks by attaching the appropriate head. 
+- For example for a classifier like I used. It as simple as collecting the backbone passing to to some linear layers to gradual extract information and reduce dimensionality. The final layer should have output dimensions correspond to the number of classes e.g for cat, dog and horse classification the output layer must have 3 neurons.
+The code is given below:
+ ```
+class ViTClassifier(nn.Module):
+    def __init__(self, input_embeddings, patch_size, n_heads,layers, num_classes, input_img=img_size, channels=3):
+        super().__init__()
+        self.embeddings = input_embeddings
+        self.patch_size = patch_size
+        self.input_img = input_img
+        self.channels = channels
+        self.n_heads = n_heads
+        self.layers =layers
+        self.num_classes = num_classes
+        self.layernorm = nn.LayerNorm(self.embeddings)
+        self.backbone = ViTBackbone(self.embeddings, self.patch_size, self.n_heads, self.layers, self.input_img)
+        self.hidden = nn.Linear(self.embeddings, self.embeddings//4)
+        self.tanh = nn.Tanh()
+        self.dropout = nn.Dropout(0.1)
+        self.final_class = nn.Linear(self.embeddings//4,self.num_classes)
+        
+    def forward(self, x):
+        x = self.backbone(x)
+        x = x[:,0,:]
+        x = self.layernorm(x)
+        x = self.hidden(x)
+        x = self.tanh(x)
+        x = self.dropout(x)
+        x = self.final_class(x)    
+        return x 
+```
+Recall: the class embedding was added to the input patches, that part is simply sliced out and fed to the linear layers for classification.
+
+If I wanted to used it backbone for pose estimation task the final layer would simply be conv2D(64, number_keypoints) to generate heatmaps that have number of channels corresponding to the number of keypoints to be estimated. The backbone could be used for any downstream computer vision task that requires feature extraction.
+
+
 
 # References
 [1] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S. and Uszkoreit, J., 2020. An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929.
