@@ -147,6 +147,10 @@ Recall: the class embedding was added to the input patches, that part is simply 
 
 If I wanted to use the backbone for pose estimation instead the final layer would simply be conv2D(encoder_processed_output, number_keypoints) to generate heatmaps that have number of channels corresponding to the number of keypoints to be estimated. The backbone could be used for any downstream computer vision task that requires feature extraction.
 
+# TODO
+- Training results discussion
+- Takeaways & Next steps
+
 The code can simply be run from terminal:
 ```
 TODO
