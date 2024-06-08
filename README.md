@@ -37,10 +37,10 @@ class PatchEmbedding(nn.Module):
 ```
 # Transformer Encoder
 The patch embeddings are passed to the transformer encoder block which typically contains layer normalizations, multi-head self attention, MLP layers.
-## Layer Normalization
+### Layer Normalization
 As is customary in machine learning tasks we want to restrict/clip input values within a range for efficient training and also prevent exploding and vanishing gradients. Batch Normalization helps us achieve, where normalization is carried out per data batch. However, this has its limitations. Consider a scenario where the batch size is too small. This would introduce a lot of noise as the mean and normalization of the small batch do not accurately represent the data distribution. On the other hand, when we have a training set that's too large, mini-batches could be split across different GPUs making the global normalization of said mini-batch inefficient as the GPUs involved would need to synchronize batch statistics. This was perfectly explained in my go-to deep learning book ["Deep Learning Foundations and Concepts"](https://www.bishopbook.com/) by Christoper Bishop. Layer normalization does not have these shortcomings as normalization is carried out by layer making it independent of the batch size. Training deep transformers typically requires a lot of training data and often large batch sizes making layer normalization an ideal candidate.
 
-## Self Attention Mechanism
+### Self Attention Mechanism
 The self-attention mechanism aids in extracting contextual information by considering the relationships between different parts of the input. For images, this involves breaking the image into patches. For instance, in a passport photo, which contains both background and foreground elements, one would expect low activation (relevance) between a patch that is purely background and a patch that is purely foreground. In self-attention, each patch embedding emits three vectors: a query, a key, and a value. The query represents the feature in question, while the keys are the features it seeks to match with. The matching is performed using a dot product operation, resulting in attention scores (activations). These scores act as scaling factors. A matrix multiplication is then performed between the attention scores and the value vectors (value vectors encode the input features). This process allows the model to combine and contextualize information from different parts of the image.
 
 ```
@@ -64,7 +64,7 @@ class AttentionBlock(nn.Module):
         return output
 ```
 
-## Multi-head Self Attention (MSA)
+### Multi-head Self Attention (MSA)
 This mechanism involves running multiple self-attention operations (referred to as "heads") in parallel. Each attention head operates on the same input but with different learned parameters, allowing the model to capture different aspects of the contextual information. The outputs of these attention heads are then concatenated and projected through a linear layer. This process enables the model to aggregate and combine contextual information extracted from multiple perspectives, enhancing its ability to understand complex relationships within the data. Code snippet given below:
 ```
 class MSA(nn.Module):
@@ -83,7 +83,7 @@ class MSA(nn.Module):
         return x
 ```
 
-## MLP
+### MLP
 This block takes in the output of the attention module expands and reduces the dimensionality to facilitate feature extraction and also introduces non-linearity to capture complete patterns. The code is given below:
 ```
 class MLP(nn.Module):
