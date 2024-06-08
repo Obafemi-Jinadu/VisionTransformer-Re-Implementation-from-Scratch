@@ -149,7 +149,7 @@ class ViTClassifier(nn.Module):
 ```
 Recall: the class embedding was added to the input patches, that part is simply sliced out and fed to the linear layers for classification.
 
-If I wanted to used it backbone for pose estimation task the final layer would simply be conv2D(64, number_keypoints) to generate heatmaps that have number of channels corresponding to the number of keypoints to be estimated. The backbone could be used for any downstream computer vision task that requires feature extraction.
+If I wanted to used the backbone for pose estimation instead the final layer would simply be conv2D(encoder_processed_output, number_keypoints) to generate heatmaps that have number of channels corresponding to the number of keypoints to be estimated. The backbone could be used for any downstream computer vision task that requires feature extraction.
 
 The code can simply be run from terminal:
 ```
