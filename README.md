@@ -49,9 +49,6 @@ The self-attention mechanism aids in extracting contextual information by consid
 class AttentionBlock(nn.Module):
     def __init__(self, embeddings, head_size, bias=True):
         super().__init__()
-        #every token emitts 2 vectors, key and query
-        #query- what am I looking for
-        #key what do I contain
         self.embeddings = embeddings
         self.head_size = head_size
         self.qkv = nn.Linear(self.embeddings, self.head_size*3,bias=bias)
