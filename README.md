@@ -35,8 +35,6 @@ class PatchEmbedding(nn.Module):
         x+=self.pos_embed  
         return x
 ```
-
-# TODO - Discussions
 # Transformer Encoder
 The patch embeddings are passed to the transformer encoder block which typically contains layer normalizations, multi-head self attention, MLP layers.
 ## Layer Normalization
