@@ -12,7 +12,7 @@ Images are broken into non-overlapping patches. Patches are projected to embeddi
 - A linear layer (3, embedding_dimension) or
 - A 2d convolution operation (input_channel = 3, output_channel = embedding_dimension, kernel = patch_size, stride = patch_size).
   
-Unlike convolutional neural networks, transformers do not have the ability to understand the spatial ordering of patches which is why an inducive bias is incorporated into the transformer encoder in the form of postion encodings. Think of it like including an index to ID every image patch but instead, for better results the position encodings are learnable parameter.
+Unlike convolutional neural networks, transformers do not have the ability to understand the spatial ordering of patches which is why an inducive bias is incorporated into the transformer encoder in the form of postion encodings. Think of it like including an index to ID every image patch but instead, for better results the position encodings are learnable parameters.
 The code implementation is shown below:
 ```
 class PatchEmbedding(nn.Module):
@@ -36,7 +36,7 @@ class PatchEmbedding(nn.Module):
         return x
 ```
 # Transformer Encoder
-The patch embeddings are passed to the transformer encoder block which typically contains layer normalizations, multi-head self attention, MLP layers.
+The patch embeddings are passed to the transformer encoder block which typically contains layer normalizations, multi-head self-attention, MLP layers.
 ### Layer Normalization
 As is customary in machine learning tasks we want to restrict/clip input values within a range for efficient training and also prevent exploding and vanishing gradients. Batch Normalization helps us achieve, where normalization is carried out per data batch. However, this has its limitations. Consider a scenario where the batch size is too small. This would introduce a lot of noise as the mean and normalization of the small batch do not accurately represent the data distribution. On the other hand, when we have a training set that's too large, mini-batches could be split across different GPUs making the global normalization of said mini-batch inefficient as the GPUs involved would need to synchronize batch statistics. This was perfectly explained in my go-to deep learning book ["Deep Learning Foundations and Concepts"](https://www.bishopbook.com/) by Christoper Bishop. Layer normalization does not have these shortcomings as normalization is carried out by layer making it independent of the batch size. Training deep transformers typically requires a lot of training data and often large batch sizes making layer normalization an ideal candidate.
 
@@ -84,7 +84,7 @@ class MSA(nn.Module):
 ```
 
 ### MLP
-This block takes in the output of the attention module expands and reduces the dimensionality to facilitate feature extraction and also introduces non-linearity to capture complete patterns. The code is given below:
+This block takes in the output of the attention module expands and reduces the dimensionality to facilitate feature extraction and also introduces non-linearity to capture complex patterns. The code is given below:
 ```
 class MLP(nn.Module):
     def __init__(self, embeddings, mlp_ratio=4):
